@@ -4,11 +4,15 @@ from modulos.carta import Carta
 import random
 
 class JuegoGuerra:
-    """Se inicializa el objeto dando valores iniciales, instanciando los mazos 
-    y creando el mazo principal mezclando las cartas mediante la utilización de
-    una lista de python y el método shuffle que responde a una semilla random
-    previamente indicada"""
+    
     def __init__(self, random_seed):
+        """
+        @brief: Se inicializa el objeto dando valores iniciales, instanciando los mazos 
+        y creando el mazo principal mezclando las cartas mediante la utilización de
+        una lista de python y el método shuffle que responde a una semilla random
+        previamente indicada.
+        @param random_seed [int]: Es la semilla que setea el random pseudoaleatorio.
+        """
         self.valores = ['2','3','4','5','6','7','8','9','10','J','Q','K','A']
         self.palos = ['♠', '♥', '♦', '♣']
         self.botinGuerra = []
@@ -29,18 +33,23 @@ class JuegoGuerra:
         for i in range(len(lista_de_cartas)):
             self.mazoPrincipal.ponerArriba(lista_de_cartas[i])  
     
-    """El método distribuye las cartas del mazo principal en los mazos de ambos
-    jugadores"""
     def repartir(self):
+        """
+        @brief: El método repartir distribuye las cartas del mazo principal en los mazos de ambos
+        jugadores.
+        """
         while self.mazoPrincipal.tamanio() != 0:
             carta = self.mazoPrincipal.sacarArriba()
             self.mazoJugador1.ponerArriba(carta)
             carta = self.mazoPrincipal.sacarArriba()
             self.mazoJugador2.ponerArriba(carta)
-    
-    """El método finDelJuego chequea si se cumplieron las condiciones de victoria
-    o de empate y devuelve true si alguna se satisfizo o false en caso contario"""       
+           
     def finDelJuego(self):
+        """
+        @brief: El método finDelJuego chequea si se cumplieron las condiciones de victoria
+        o de empate y devuelve true si alguna se satisfizo o false en caso contario.
+        @return: Devuelve un booleano que confirma si el juego terminó.
+        """
         if(self.mazoJugador1.tamanio() == 0):
             self.ganador = "jugador 2"
             self.proyectarEnConsola(None, None, False, True)
@@ -56,10 +65,12 @@ class JuegoGuerra:
         else:
             return False
     
-    """El método jugarTurno simula un turno y hace la comparación de las cartas
-    jugadas para determinar el ganador de las cartas jugadas en el turno siempre
-    que no haya terminado el juego. Cada llamada aumenta los turnos_jugados en 1"""
     def jugarTurno(self):
+        """
+        @brief: El método jugarTurno simula un turno y hace la comparación de las cartas
+        jugadas para determinar el ganador de las cartas jugadas en el turno siempre
+        que no haya terminado el juego. Cada llamada aumenta los turnos_jugados en 1.
+        """
         if (not self.finDelJuego()):
             self.turnos_jugados += 1
             cartaJ1 = self.mazoJugador1.sacarArriba()
@@ -76,11 +87,13 @@ class JuegoGuerra:
                 self.botinGuerra.append(cartaJ2)
                 self.guerra()
             
-    """El método guerra se da en un turno cuando las cartas jugadas tienen el 
-    mismo valor. En este evento se pone en juego el botín de guerra y se evaluan
-    nuevas cartas jugadas. El evento puede darse consecutivamente si las cartas
-    jugadas tienen el mismo valor nuevamente"""
     def guerra(self):
+        """
+        @brief: El método guerra se da en un turno cuando las cartas jugadas tienen el 
+        mismo valor. En este evento se pone en juego el botín de guerra y se evaluan
+        nuevas cartas jugadas. El evento puede darse consecutivamente si las cartas
+        jugadas tienen el mismo valor nuevamente.
+        """
         for i in range(0,3):
             if (not self.finDelJuego()):
                 carta = self.mazoJugador1.sacarArriba()
@@ -107,18 +120,26 @@ class JuegoGuerra:
                 self.botinGuerra.append(cartaJ1)
                 self.botinGuerra.append(cartaJ2)
                 self.guerra()
-        
-    """El método iniciar_juego llama a la repartija de cartas y a la ejecución
-    de un turno hasta que las condiciones de finalización se hayan dado"""    
+           
     def iniciar_juego(self):
+        """
+        @brief: El método iniciar_juego llama a la repartija de cartas y a la ejecución
+        de un turno hasta que las condiciones de finalización se hayan dado.
+        """ 
         self.repartir()
         while self.ganador == None and self.empate == False:
             self.jugarTurno()
     
-    """El método proyectarEnConsola permite la visualiación de la evolución de
-    la partida a través de la consola del compilador. Recibe condiciones por 
-    parámetro para proyectar correctamente el turno"""
     def proyectarEnConsola(self, cartaJugada1, cartaJugada2, hayGuerra, finDelJuego):
+        """
+        @brief: El método proyectarEnConsola permite la visualiación de la evolución de
+        la partida a través de la consola del compilador. Recibe condiciones por 
+        parámetro para proyectar correctamente el turno.
+        @param cartaJugada1: Es la carta jugada por el Jugador 1 en el turno actual.
+        @param cartaJugada2: Es la carta jugada por el Jugador 2 en el turno actual.
+        @param hayGuerra: Es un booleano que indica proyectar un escenario de Guerra.
+        @param finDelJuego: Es un booleano que indica si el juego sigue en progreso.
+        """
         if(not finDelJuego):
             print("--------------------------------------------")
             if (hayGuerra):
